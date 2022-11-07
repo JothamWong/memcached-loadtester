@@ -258,7 +258,8 @@ struct dep_dist* loadAndScaleDepFile(struct config* config) {
             char* newKey = randomString(keySize);
             strcpy(entry->key, newKey);
             dist->dep_entries[i] = entry;
-            fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, entry->size, entry->key); 
+            //fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, entry->size, entry->key); 
+            fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, config->valueLength, entry->key);
             prev = entry->cdf;
             i--;    
             avg_size+=entry->size; 	
@@ -275,7 +276,8 @@ struct dep_dist* loadAndScaleDepFile(struct config* config) {
             char* newKey = randomString(keySize);
             strcpy(entry->key, newKey);
             dist->dep_entries[i] = entry;
-            fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, entry->size, entry->key); 
+            //fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, entry->size, entry->key); 
+            fprintf(fileOut, "%15.13f,  %d, %s\n", entry->cdf, config->valueLength, entry->key);
             prev = prev-w;
             i--;    
             avg_size+=entry->size; 	
@@ -298,7 +300,8 @@ struct dep_dist* loadAndScaleDepFile(struct config* config) {
             char* newKey = randomString(keySize);
             strcpy(entry->key, newKey);
             dist->dep_entries[i] = entry;
-            fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, entry->size, entry->key); 
+            //fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, entry->size, entry->key); 
+            fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, config->valueLength, entry->key); 
             prev = entry->cdf;
             i--;
             if(entry->cdf<0) printf("cdf=%10.8f\n", entry->cdf);
@@ -313,7 +316,8 @@ struct dep_dist* loadAndScaleDepFile(struct config* config) {
             char* newKey = randomString(keySize);
             strcpy(entry->key, newKey);
             dist->dep_entries[i] = entry;
-            fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, entry->size, entry->key); 
+            //fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, entry->size, entry->key); 
+            fprintf(fileOut, "%15.13f, %d, %s\n", entry->cdf, config->valueLength, entry->key); 
             prev = prev-w;
             i--;
             if(entry->cdf<0) printf("cdf=%10.8f\n", entry->cdf);

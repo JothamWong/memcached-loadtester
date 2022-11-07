@@ -66,6 +66,7 @@ struct config {
   double ALPHA;
   DISTRIBUTION distribution;
   int randomValue;
+  int valueLength;
 };
 
 #endif

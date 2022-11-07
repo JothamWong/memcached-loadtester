@@ -33,6 +33,7 @@ void printUsage() {
                 "        [-S dataset scaling factor]\n"
                 "        [-t arg  runtime of loadtesting in seconds (default: run forever)]\n"
                 "        [-T arg  interval between stats printing (default: 1)]\n"
+                "        [-V arg sets the length of all values]\n"
                 "        [-w number of worker threads]\n"
                 "        [-x run timing tests instead of loadtesting]\n"
                 "        [-Z use pure Zipfian instead of scaled distribution from the twitter dataset\n"   );
@@ -78,6 +79,7 @@ struct config* parseArgs(int argc, char** argv) {
   config->ALPHA=0.915;
   config->distribution = SCALED_TWITTER; 
   config->randomValue = 0;
+  config->valueLength = 550;
   
   int i;
   for(i=0; i<MAX_SERVERS; i++){
@@ -86,7 +88,7 @@ struct config* parseArgs(int argc, char** argv) {
   }
 
   int c;
-  while ((c = getopt (argc, argv, "a:c:d:D:ef:g:hi:jk:l:L:m:MnN:o:p:P:ur:Rs:S:t:T:w:W:xzZ")) != -1) {
+  while ((c = getopt (argc, argv, "a:c:d:D:ef:g:hi:jk:l:L:m:MnN:o:p:P:ur:Rs:S:t:T:V:w:W:xzZ")) != -1) {
     switch (c) {
 
       case 'a':
@@ -227,6 +229,10 @@ struct config* parseArgs(int argc, char** argv) {
 
       case 'R':
         config->randomValue = 1;
+        break;
+
+      case 'V':
+        config->valueLength = atoi(optarg);
         break;
     }
   }
