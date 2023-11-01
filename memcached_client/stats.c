@@ -20,7 +20,7 @@ void addSample(struct stat* stat, float value) {
   stat->min = fmin(stat->min,value);
   stat->max = fmax(stat->max,value);
 
-  if(value < .001){
+  if(value < .01){
     int bin = (int)(value*10000000);
     stat->micros[bin] += 1;
   } else if( value < 5.0){
@@ -69,7 +69,7 @@ double findQuantile(struct stat* stat, double quantile) {
   int nTillQuantile = global_stats.response_time.s0 * quantile;
   int  count = 0;
   int i;
-  for( i = 0; i < 10000; i++) {
+  for( i = 0; i < 100000; i++) {
     count += stat->micros[i];
     if( count >= nTillQuantile ){
       double quantile = (i+1) * .0000001;
@@ -97,6 +97,24 @@ double findQuantile(struct stat* stat, double quantile) {
 
 }//End findQuantile()
 
+void write_to_file(struct stat* stat) {
+  int i;
+  FILE *file = fopen("/usr/src/memcached/memcached_client/log.txt", "a");
+  // if (file == NULL) {
+  //   return;
+  // }
+  printf("%s\n", "Ayan Test"); 
+  for(i = 0; i < 100000; i++)
+    fprintf(file, "%d ", stat->micros[i]);
+  for(i = 0; i < 50000; i++)
+    fprintf(file, "%d ", stat->millis[i]);
+  for(i = 0; i < 1000; i++)
+    fprintf(file, "%d ", stat->fulls[i]);
+  fprintf(file, "\n");
+  fclose(file);
+  return;
+}
+
 void printGlobalStats(struct config* config) {
 
   pthread_mutex_lock(&stats_lock);
@@ -109,6 +127,7 @@ void printGlobalStats(struct config* config) {
   double q95 = findQuantile(&global_stats.response_time, .95);
   double q99 = findQuantile(&global_stats.response_time, .99);
 
+  write_to_file(&global_stats.response_time);
   printf("%10s,%10s,%8s,%16s, %8s,%11s,%10s,%13s,%10s,%10s,%10s,%12s,%10s,%10s,%11s,%14s\n", "unix_ts", "timeDiff", "rps", "requests", "gets", "sets",  "hits", "misses", "avg_lat", "90th", "95th", "99th", "std", "min", "max", "avgGetSize");
   printf("%10ld, %10f, %9.1f,  %10d, %10d, %10d, %10d, %10d, %10f, %10f, %10f, %10f, %10f, %10f, %10f, %10f\n", 
 		currentTime.tv_sec, timeDiff, rps, global_stats.requests, global_stats.gets, global_stats.sets, global_stats.hits, global_stats.misses,
