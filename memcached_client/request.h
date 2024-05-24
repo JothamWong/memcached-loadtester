@@ -5,6 +5,7 @@
 #include "conn.h"
 #include "worker.h"
 #include "util.h"
+#include <stdint.h>
 
 #define MAGIC_REQUEST  ((char) 0x80)
 #define MAGIC_RESPONSE ((char) 0x81)
@@ -61,6 +62,8 @@ struct udp_header {
 };
 
 struct request{
+  // Add timestamp fields here at the start so that we can have variable length content
+  uint64_t insertion_timestamp; // 8 bytes
   struct request_header header;
   struct conn* connection;
   struct worker* worker;
